@@ -1,0 +1,34 @@
+    ## errors get the generic error page
+    # TODO: Separate page for everything
+
+    error_page 400 401 402 403 404 405 406 408 409 410 411 412 413 414 415 416 417 /error_page.html;
+    #error_page 400 401 402 403 404 405 406 408 409 410 411 412 413 414 415 416 417 /40x.html;
+    location = /40x.html {
+        internal;
+        expires 7s; # this page expires in 7 seconds
+    }
+
+    error_page 500 501 502 503 504 505 /error_page.html;
+    #error_page 500 501 502 503 504 505 /50x.html;
+    location = /50x.html {
+        internal;
+        expires 7s; # this page expires in 7 seconds
+    }
+
+    location = /down.html {
+        internal;
+        expires 7s; # this page expires in 7 seconds
+    }
+
+    location = /error_page.html {
+        internal;
+        expires 7s; # this page expires in 7 seconds
+    }
+
+    location = /dont.png {
+        expires 1d; # this page expires in 1 day
+    }
+
+    location = /upgrade.png {
+        expires 1d; # this page expires in 1 day
+    }

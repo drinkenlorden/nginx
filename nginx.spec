@@ -5,9 +5,10 @@
 %bcond_with balancer
 %bcond_with perl_module
 %bcond_with file_aio
-%bcond_with extended_stats
+#
 %bcond_with ustats
 %bcond_with chunkin
+%bcond_with extended_status
 
 # from f20 src rpm
 %global  _hardened_build     1
@@ -27,7 +28,7 @@
 %endif
 
 Name:           nginx
-Version:        1.4.1
+Version:        1.4.2
 %if %{with balancer}
 Release:        0.balancer.SS%{?dist}
 %else
@@ -95,8 +96,10 @@ Source1003: https://github.com/ry/nginx-ey-balancer/tarball/v0.0.6/ry-nginx-ey-b
 #Source1004: https://download.github.com/cep21-healthcheck_nginx_upstreams-b33a846.tar.gz
 #Source1005:  https://download.github.com/ngx_supervisord-1.4.tar.gz
 #Source1006:  http://ustats.googlecode.com/svn/trunk/ustats.tar.gz
-Source1006:  ustats-rev35.tar.gz
-Source1007:   https://github.com/zealot83/ngx_http_extended_status_module/tarball/gh-pages/zealot83-ngx_http_extended_status_module-9c2cd0b.tar.gz
+#Source1006:  ustats-rev35.tar.gz
+Source1006:  https://github.com/0xc0dec/ustats/tarball/fde9ebda2b40b076abadac55921d38826e869de1/ustats-rev35.tar.gz
+
+Source1007:  https://github.com/zealot83/ngx_http_extended_status_module/tarball/gh-pages/zealot83-ngx_http_extended_status_module-9c2cd0b.tar.gz
 
 Source1111 https://download.ssabchew.info/nginx_custom_configs_htmlroot.tar.gz
 
@@ -104,7 +107,7 @@ Source1111 https://download.ssabchew.info/nginx_custom_configs_htmlroot.tar.gz
 # -D_FORTIFY_SOURCE=2 causing warnings to turn into errors.
 Patch0:     nginx-auto-cc-gcc.patch
 Patch1:     nginx-ey-balancer.patch
-Patch2:     request_start_variable.patch
+Patch2:     https://github.com/drinkenlorden/nginx/raw/d71c09533989ce2881178ecd5a13aae99e056ee7/request_start_variable.patch
 #Patch2:     https://gist.github.com/michaeldauria/2890138/raw/ee28dd97de0a0c4a2762b3de2810c55c1fd943bf/request_start_variable.patch
 Patch3:     nginx-ey-balancer-1.2.patch
 #Patch4:     nginx-http_healthcheck.patch
@@ -167,7 +170,8 @@ mv headers_more/*/* headers_more/
 
 %if %{with ustats}
 tar -xzf "%{SOURCE1006}"
-mv ustats/*/* ustats/
+#mv ustats/*/* ustats/
+mv 0xc0dec-ustats-fde9ebd/*/* 0xc0dec-ustats-fde9ebd/
 patch -p1 -i  ustats/nginx.patch
 %endif
 
@@ -226,7 +230,7 @@ export DESTDIR=%{buildroot}
     --with-http_stub_status_module \
     --with-mail \
     --with-mail_ssl_module \
-%if %{with extended_stats}
+%if %{with extended_status}
     --add-module="$PWD/extended_status/addons" \
 %endif
 %if %{with ustats}
@@ -364,13 +368,15 @@ fi
 %endif
 %attr(-,%{nginx_user},%{nginx_group}) %dir %{nginx_home}
 %attr(-,%{nginx_user},%{nginx_group}) %dir %{nginx_home_tmp}
-%{nginx_confdir}/inc/*
-%{nginx_confdir}/pki/*
-%{nginx_confdir}/sites.d/*
-%attr(-,%{nginx_user},%{nginx_group}) /srv/*
-
+%config(noreplace) %{nginx_confdir}/inc/*
+%config(noreplace) %{nginx_confdir}/pki/*
+%config(noreplace) %{nginx_confdir}/sites.d/*
+%attr(-,%{nginx_user},%{nginx_group}) %config(noreplace) /srv/*
 
 %changelog
+* Sun Jul 28 2013 tiliyan Sabchew <ssabchew at yahoo dot com> - 128:1.4.2-0.SS
+- update to version 1.4.2
+
 * Thu May 9 2013  Stiliyan Sabchew <ssabchew at yahoo dot com> - 128:1.4.1-0.SS
 - update to version 1.4.1 - CVE-2013-2028
 

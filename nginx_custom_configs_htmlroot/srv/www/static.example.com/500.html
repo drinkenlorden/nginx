@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>500 - ERROR</title>
+  <style>
+  	body {background: #fff;}
+		#Box {margin: 30px auto; position: relative; width: 960px; height: 415px; position: relative; background-image: url('bg.png'); border-radius: 8px; box-shadow: 0px 0px 30px #ccc; overflow: hidden;}
+		.item {position: absolute; background-image: url('sprite-500.png');}
+		#Plane {width: 858px; height: 155px; top: 100px; left: 53px; background-position: 0 0;}
+		#Cloud1 {width: 157px; height: 87px; top: 30px; left: 350px; background-position: 0 -155px; }
+		#Cloud2 {width: 116px; height: 60px; top: 270px; left: 50px; background-position: -157px -155px; }
+		#t404 {width: 232px; height: 90px; top: 20px; left: 700px; background-position: -273px -155px; }
+		#Title {width: 260px; height: 86px; margin: 30px auto; text-indent: -9999px; background-image: url('sprite.png');}
+		#Title a {display: block; width: 100%; height: 100%;}
+  </style>
+</head>
+
+<body>
+	
+  <h1 id="Title"><a href="#" class="tooltip">&nbsp;</a></h1>
+	
+	<div id="Box">
+		<div id="Cloud1" class="item"></div>
+		<div id="Cloud2" class="item"></div>
+		<div id="Plane" class="item"></div>
+		<div id="t404" class="item"></div>
+	</div>
+
+	<script type="text/javascript" src="jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="jquery.plax.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#Plane').plaxify({"xRange":10,"yRange":10});
+			$('#Cloud1').plaxify({"xRange":50,"yRange":50});
+			$('#Cloud2').plaxify({"xRange":30,"yRange":30,"invert":true});
+			$.plax.enable();
+		});
+	</script>
+
+  </body>
+</html>
+
