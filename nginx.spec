@@ -120,12 +120,15 @@ BuildRequires:     perl-devel
 BuildRequires:     perl(ExtUtils::Embed)
 BuildRequires:     zlib-devel
 BuildRequires:     lua-devel
+BuildRequires:     openldap-devel
 
 Requires:          lua
 Requires:          nginx-filesystem = %{epoch}:%{version}-%{release}
 Requires:          GeoIP
 Requires:          gd
 Requires:          openssl
+#Requires:          openldap
+
 Requires:          pcre
 Requires:          perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 Requires(pre):     nginx-filesystem
