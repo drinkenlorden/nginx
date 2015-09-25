@@ -4,14 +4,14 @@ set -x
 set -e
 
 ARCH=${ARCH:-$(uname -m)}
-DIST='el6'
-MOCKCFG="epel-6-$ARCH"
+DIST='el7'
+MOCKCFG="epel-7-$ARCH"
 REPO_SSH='root@repo.ssabchew.info'
 REPO_SSH_DIR='/srv/www/repos/centos/'
 SSH_USER=root
 
 chk_srcs() {
-    spectool -g "$1"
+    spectool -g "$1" || :
 }
 
 
