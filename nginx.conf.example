@@ -1,0 +1,56 @@
+# For more information on configuration, see:
+#   * Official English Documentation: http://nginx.org/en/docs/
+#   * Official Russian Documentation: http://nginx.org/ru/docs/
+
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /var/run/nginx.pid;
+
+
+events {
+    multi_accept on;
+    worker_connections 1024;
+    use epoll;
+    # SS
+    accept_mutex_delay 250ms;
+}
+
+
+http {
+# SS - included in my log format file
+    include /etc/nginx/conf.d/log_formats.inc;
+
+# SS - add secured headers
+    # don't send the nginx version number in error pages and Server header
+    include     inc/headers_harden.conf;
+
+# SS - Enable nginx virtual host traffic status module:
+#  https://github.com/vozlt/nginx-module-vts
+
+    vhost_traffic_status_zone;
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   65;
+    types_hash_max_size 2048;
+
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    # Load modular configuration files from the /etc/nginx/conf.d directory.
+    # See http://nginx.org/en/docs/ngx_core_module.html#include
+    # for more information.
+    include /etc/nginx/conf.d/*.conf;
+
+# SS Load default sites for http and https
+    include sites.d/0_default-http.inc;
+
+# S.S.
+# Include all other sites
+    include /etc/nginx/sites.d/*.conf;
+
+}
